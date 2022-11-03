@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,7 +62,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         private TextView categoryName;
         ImageView deleteBtn;
-        Dialog progressDialog;
+        Dialog progressDialog, editDialog;
+        private EditText editCategoryName;
+        Button updateBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,15 +72,48 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             categoryName = itemView.findViewById(R.id.catname);
             deleteBtn = itemView.findViewById(R.id.deletebtn);
 
+
             progressDialog = new Dialog(itemView.getContext());
             progressDialog.setContentView(R.layout.loading_progressbar);
             progressDialog.setCancelable(false);
             progressDialog.getWindow().setBackgroundDrawableResource(R.drawable.progressbar_background);
             progressDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            editDialog = new Dialog(itemView.getContext());
+            editDialog.setContentView(R.layout.edit_category_page);
+            editDialog.setCancelable(true);
+            editDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            editCategoryName = editDialog.findViewById(R.id.editCategory);
+            updateBtn = editDialog.findViewById(R.id.updateBtn);
+
+
         }
         private void setData(String title, int position, CategoryAdapter categoryAdapter) {
 
             categoryName.setText(title);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    editCategoryName.setText(category_list.get(position).getName());
+                    editDialog.show();
+
+                    return false;
+                }
+            });
+
+            updateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (editCategoryName.getText().toString().isEmpty()) {
+                        editCategoryName.setError("Please enter new category name");
+                        return;
+                    }
+                    updateCategoryName(editCategoryName.getText().toString(), position, itemView.getContext(), categoryAdapter);
+                }
+            });
 
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,6 +179,57 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
                             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
 
+                        }
+                    });
+
+        }
+
+        private void updateCategoryName(String newName, int pos, Context context, CategoryAdapter categoryAdapter) {
+
+            editDialog.dismiss();
+            progressDialog.show();
+
+            Map<String, Object> category_data = new ArrayMap<>();
+
+            category_data.put("NAME", newName);
+
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+            firestore.collection("QUIZ").document(category_list.get(pos).getId())
+                    .update(category_data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Map<String, Object> category_doc = new ArrayMap<>();
+                            category_doc.put("CAT" + String.valueOf(pos + 1) + "_NAME", newName);
+
+                            firestore.collection("QUIZ").document("Categories")
+                                    .update(category_doc)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show();
+                                            Category.category_list.get(pos).setName(newName);
+                                            categoryAdapter.notifyDataSetChanged();
+
+                                            progressDialog.dismiss();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     });
 
