@@ -160,10 +160,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             category_doc.put("COUNT", index - 1);
 
-            firestore.collection("QUIZ").document("Categories").set(category_doc)
+            firestore.collection("QUIZ").document("Categories")
+                    .set(category_doc)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
+
+                            firestore.collection("QUIZ").document(category_list.get(id).getId())
+                                            .delete();
 
                             Toast.makeText(context, "Category deleted successfully", Toast.LENGTH_SHORT).show();
 
@@ -201,7 +205,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                         @Override
                         public void onSuccess(Void unused) {
                             Map<String, Object> category_doc = new ArrayMap<>();
-                            category_doc.put("CAT" + String.valueOf(pos + 1) + "_NAME", newName);
+                            category_doc.put("CATEGORY" + String.valueOf(pos + 1) + "_NAME", newName);
 
                             firestore.collection("QUIZ").document("Categories")
                                     .update(category_doc)
