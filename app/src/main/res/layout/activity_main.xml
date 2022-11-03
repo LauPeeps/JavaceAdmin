@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#181818"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_marginBottom="40dp"
+        />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="21dp"
+        android:textColorHint="#433636"
+        android:background="#0C0C0C"
+        android:padding="6dp"
+        android:textColor="@color/white"
+        />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="21dp"
+        android:textColorHint="#433636"
+        android:background="#0C0C0C"
+        android:padding="6dp"
+        android:textColor="@color/white"
+        />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_design"
+        android:text="Login"
+        android:textColor="#51278C"
+        android:textSize="21dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        />
+
+
+
+
+
+
+</LinearLayout>
