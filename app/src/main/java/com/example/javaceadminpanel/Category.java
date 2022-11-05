@@ -140,6 +140,7 @@ Category extends AppCompatActivity {
         Map<String, Object> categoryData = new ArrayMap<>();
         categoryData.put("NAME", categoryName);
         categoryData.put("SETS", 0);
+        categoryData.put("BASE", 1);
         String document_id = firestore.collection("QUIZ").document().getId();
 
         firestore.collection("QUIZ").document(document_id).set(categoryData).addOnSuccessListener(new OnSuccessListener<Void>() {
