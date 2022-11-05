@@ -49,7 +49,7 @@ Category extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Categories");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.category_recycler);
         addCategory = findViewById(R.id.addbtn);

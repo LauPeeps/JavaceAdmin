@@ -8,7 +8,7 @@
     tools:context=".Sets">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/setstoolbar"
         android:background="#262433"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toTopOf="@+id/addSetBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/setstoolbar"
         >
     </androidx.recyclerview.widget.RecyclerView>
 

@@ -5,6 +5,7 @@ import static com.example.javaceadminpanel.Category.category_list;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.collection.ArrayMap;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Sets extends AppCompatActivity {
 
@@ -39,6 +41,10 @@ public class Sets extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sets);
+
+        Toolbar toolbar = findViewById(R.id.setstoolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Sets");
 
         setsView = findViewById(R.id.sets_recycler);
         addSetBtn = findViewById(R.id.addSetBtn);
@@ -85,7 +91,7 @@ public class Sets extends AppCompatActivity {
                         long noOfSets = (long) documentSnapshot.get("SETS");
 
                         for (int i = 1; i <= noOfSets; i++) {
-                            idOfSets.add(documentSnapshot.getString("SET" + i + "_ID"));
+                            idOfSets.add(documentSnapshot.getString("SET" + String.valueOf(i) + "_ID"));
 
                         }
                         category_list.get(category_index).setSetBase(documentSnapshot.getString("BASE"));
