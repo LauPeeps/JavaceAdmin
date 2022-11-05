@@ -51,7 +51,7 @@ public class SetsAdapter extends RecyclerView.Adapter<SetsAdapter.Viewholder> {
         }
         private void setData(int pos) {
 
-            setName.setText("SET" + String.valueOf(pos + 1));
+            setName.setText("SET " + String.valueOf(pos + 1));
         }
     }
 }

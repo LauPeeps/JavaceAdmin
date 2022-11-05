@@ -97,6 +97,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    Category.category_index = position;
                     Intent intent = new Intent(itemView.getContext(), Sets.class);
                     itemView.getContext().startActivity(intent);
                 }

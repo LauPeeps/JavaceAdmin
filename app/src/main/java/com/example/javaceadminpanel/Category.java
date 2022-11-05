@@ -33,6 +33,7 @@ Category extends AppCompatActivity {
     RecyclerView recyclerView;
     Button addCategory;
     public static List<CategoryModel> category_list = new ArrayList<>();
+    public static int category_index = 0;
     FirebaseFirestore firestore;
     Dialog progressDialog, addPage;
     EditText name;
@@ -115,7 +116,7 @@ Category extends AppCompatActivity {
                         for (int i = 1; i<= count; i++) {
                             String categoryName = documentSnapshot.getString("CATEGORY"+String.valueOf(i)+"_NAME");
                             String categoryId = documentSnapshot.getString("CATEGORY"+String.valueOf(i)+"_ID");
-                            category_list.add(new CategoryModel(categoryId, categoryName, 0));
+                            category_list.add(new CategoryModel(categoryId, categoryName, "0", "1"));
                         }
                         categoryAdapter = new CategoryAdapter(category_list);
                         recyclerView.setAdapter(categoryAdapter);
@@ -140,7 +141,7 @@ Category extends AppCompatActivity {
         Map<String, Object> categoryData = new ArrayMap<>();
         categoryData.put("NAME", categoryName);
         categoryData.put("SETS", 0);
-        categoryData.put("BASE", 1);
+        categoryData.put("BASE", "1");
         String document_id = firestore.collection("QUIZ").document().getId();
 
         firestore.collection("QUIZ").document(document_id).set(categoryData).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -156,7 +157,7 @@ Category extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         Toast.makeText(Category.this, "Category added successfully", Toast.LENGTH_LONG).show();
 
-                        category_list.add(new CategoryModel(document_id, categoryName, 0));
+                        category_list.add(new CategoryModel(document_id, categoryName, "0", "1"));
 
                         categoryAdapter.notifyItemInserted(category_list.size());
 

@@ -2,15 +2,17 @@ package com.example.javaceadminpanel;
 
 public class CategoryModel {
 
-    private String id,name;
-    private int sets;
+    private String id,name, noOfSets, setBase;
 
 
-    public CategoryModel(String id, String name, int sets) {
+
+    public CategoryModel(String id, String name, String noOfSets, String setBase) {
         this.id = id;
         this.name = name;
-        this.sets = sets;
+        this.noOfSets = noOfSets;
+        this.setBase = setBase;
     }
+
 
     public String getId() {
         return id;
@@ -28,11 +30,19 @@ public class CategoryModel {
         this.name = name;
     }
 
-    public int getSets() {
-        return sets;
+    public String getNoOfSets() {
+        return noOfSets;
     }
 
-    public void setSets(int sets) {
-        this.sets = sets;
+    public void setNoOfSets(String noOfSets) {
+        this.noOfSets = noOfSets;
+    }
+
+    public String getSetBase() {
+        return setBase;
+    }
+
+    public void setSetBase(String setBase) {
+        this.setBase = setBase;
     }
 }
