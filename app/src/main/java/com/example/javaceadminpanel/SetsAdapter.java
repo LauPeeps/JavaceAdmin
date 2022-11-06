@@ -2,11 +2,13 @@ package com.example.javaceadminpanel;
 
 import static com.example.javaceadminpanel.Category.category_index;
 import static com.example.javaceadminpanel.Category.category_list;
+import static com.example.javaceadminpanel.Sets.set_index;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +83,17 @@ public class SetsAdapter extends RecyclerView.Adapter<SetsAdapter.Viewholder> {
 
             setName.setText("SET " + String.valueOf(pos + 1));
 
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    set_index = pos;
+
+                    Intent intent = new Intent(itemView.getContext(), Questions.class);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
 
             setDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

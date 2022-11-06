@@ -36,7 +36,7 @@ public class Sets extends AppCompatActivity {
     Dialog progressDialog;
 
     public static List<String> idOfSets = new ArrayList<>();
-
+    public static int set_index = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
