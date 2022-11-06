@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,8 @@ public class Questions extends AppCompatActivity {
         addQuestionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(Questions.this, QuestionsAdderActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -123,4 +125,12 @@ public class Questions extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (questionsAdapter != null) {
+            questionsAdapter.notifyDataSetChanged();
+        }
+    }
 }
