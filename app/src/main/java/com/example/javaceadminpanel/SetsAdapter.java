@@ -99,8 +99,8 @@ public class SetsAdapter extends RecyclerView.Adapter<SetsAdapter.Viewholder> {
                 @Override
                 public void onClick(View view) {
                     AlertDialog alertDialog = new AlertDialog.Builder(itemView.getContext())
-                            .setTitle("Category Deletion")
-                            .setMessage("Delete this category?")
+                            .setTitle("Set Deletion")
+                            .setMessage("Delete this set?")
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
