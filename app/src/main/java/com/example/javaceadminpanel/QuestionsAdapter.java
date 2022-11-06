@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,16 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
 
         private void setData(int pos, QuestionsAdapter questionsAdapter) {
             title.setText("Question " + String.valueOf(pos + 1));
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), QuestionsAdderActivity.class);
+                    intent.putExtra("ACTION", "EDIT");
+                    intent.putExtra("Q_ID", pos);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
 
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

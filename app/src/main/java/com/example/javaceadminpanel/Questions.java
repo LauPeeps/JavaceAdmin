@@ -62,6 +62,7 @@ public class Questions extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Questions.this, QuestionsAdderActivity.class);
+                intent.putExtra("ACTION", "ADD");
                 startActivity(intent);
             }
         });

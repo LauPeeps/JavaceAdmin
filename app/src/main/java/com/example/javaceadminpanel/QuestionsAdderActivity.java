@@ -32,6 +32,8 @@ public class QuestionsAdderActivity extends AppCompatActivity {
     String questionStr, option1Str, option2Str, option3Str, option4Str, answerStr;
     Dialog progressDialog;
     FirebaseFirestore firestore;
+    String action;
+    int question_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,6 @@ public class QuestionsAdderActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.addquestions_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Question " + String.valueOf(questionsModelList.size() + 1));
 
         question = findViewById(R.id.questionInfo);
         option1 = findViewById(R.id.choice1);
@@ -60,6 +61,18 @@ public class QuestionsAdderActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
+        action = getIntent().getStringExtra("ACTION");
+
+        if (action.compareTo("EDIT") == 0) {
+            fetchData(question_id);
+            getSupportActionBar().setTitle("Question " + String.valueOf(question_id));
+            question_id = getIntent().getIntExtra("Q_ID", 0);
+
+            addQuestionBtn.setText("Update");
+        } else {
+            getSupportActionBar().setTitle("Question " + String.valueOf(questionsModelList.size() + 1));
+            addQuestionBtn.setText("Add");
+        }
 
         addQuestionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +83,8 @@ public class QuestionsAdderActivity extends AppCompatActivity {
                 option3Str = option3.getText().toString();
                 option4Str = option4.getText().toString();
                 answerStr = answer.getText().toString();
-                int checkAnswerStr = Integer.parseInt(answerStr);
+
+
                 if (questionStr.isEmpty()) {
                     question.setError("Please enter a question");
                     return;
@@ -95,11 +109,16 @@ public class QuestionsAdderActivity extends AppCompatActivity {
                     answer.setError("Please enter the correct answer");
                     return;
                 }
-                if (checkAnswerStr > 4) {
+                if (Integer.valueOf(answerStr) > 4) {
                     answer.setError("Please enter the 1 - 4");
                     return;
                 }
-                addQuestion();
+
+                if (action.compareTo("EDIT") == 0) {
+                    editQuestion();
+                } else {
+                    addQuestion();
+                }
             }
         });
     }
@@ -149,6 +168,7 @@ public class QuestionsAdderActivity extends AppCompatActivity {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Toast.makeText(QuestionsAdderActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
                                     }
                                 });
 
@@ -157,7 +177,56 @@ public class QuestionsAdderActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(QuestionsAdderActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                 });
+    }
+
+    private void fetchData(int question_id) {
+        question.setText(questionsModelList.get(question_id).getQuestion());
+        option1.setText(questionsModelList.get(question_id).getOption1());
+        option2.setText(questionsModelList.get(question_id).getOption2());
+        option3.setText(questionsModelList.get(question_id).getOption3());
+        option4.setText(questionsModelList.get(question_id).getOption4());
+        answer.setText(String.valueOf(questionsModelList.get(question_id).getCorrect()));
+    }
+
+    private void editQuestion() {
+        progressDialog.show();
+
+        Map<String, Object> question_data = new ArrayMap<>();
+        question_data.put("QUESTION", questionStr);
+        question_data.put("A", option1Str);
+        question_data.put("B", option2Str);
+        question_data.put("C", option3Str);
+        question_data.put("D", option4Str);
+        question_data.put("CORRECT", answerStr);
+
+        firestore.collection("QUIZ").document(category_list.get(category_index).getId())
+                .collection(idOfSets.get(set_index)).document(questionsModelList.get(question_id).getQuestion_id())
+                .set(question_data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(QuestionsAdderActivity.this, "Question updated successfully", Toast.LENGTH_SHORT).show();
+                        questionsModelList.get(question_id).setQuestion(questionStr);
+                        questionsModelList.get(question_id).setOption1(option1Str);
+                        questionsModelList.get(question_id).setOption2(option2Str);
+                        questionsModelList.get(question_id).setOption3(option3Str);
+                        questionsModelList.get(question_id).setOption4(option4Str);
+                        questionsModelList.get(question_id).setCorrect(Integer.parseInt(answerStr));
+
+                        progressDialog.dismiss();
+
+                        QuestionsAdderActivity.this.finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(QuestionsAdderActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
+
     }
 }
