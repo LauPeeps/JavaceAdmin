@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,6 +46,8 @@ public class Sets extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.setstoolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Sets");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setsView = findViewById(R.id.sets_recycler);
         addSetBtn = findViewById(R.id.addSetBtn);
@@ -123,7 +126,7 @@ public class Sets extends AppCompatActivity {
         String current_questionNo = category_list.get(category_index).getSetBase();
 
         Map<String, Object> question_data = new ArrayMap<>();
-        question_data.put("QNO", 0);
+        question_data.put("QNO", "0");
 
         firestore.collection("QUIZ").document(current_category_id)
                 .collection(current_questionNo).document("QUESTION_LIST")
@@ -168,5 +171,14 @@ public class Sets extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

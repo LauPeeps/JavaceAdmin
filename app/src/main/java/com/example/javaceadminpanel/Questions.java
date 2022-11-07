@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -48,6 +49,8 @@ public class Questions extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.questions_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Questions");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         recyclerView = findViewById(R.id.questions_recycler);
         addQuestionBtn = findViewById(R.id.addQuestionBtn);
@@ -133,5 +136,14 @@ public class Questions extends AppCompatActivity {
         if (questionsAdapter != null) {
             questionsAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

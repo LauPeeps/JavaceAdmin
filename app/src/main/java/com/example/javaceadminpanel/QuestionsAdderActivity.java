@@ -13,6 +13,7 @@ import androidx.collection.ArrayMap;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,6 +44,8 @@ public class QuestionsAdderActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.addquestions_toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         question = findViewById(R.id.questionInfo);
         option1 = findViewById(R.id.choice1);
         option2 = findViewById(R.id.choice2);
@@ -65,7 +68,7 @@ public class QuestionsAdderActivity extends AppCompatActivity {
 
         if (action.compareTo("EDIT") == 0) {
             fetchData(question_id);
-            getSupportActionBar().setTitle("Question " + String.valueOf(question_id));
+            getSupportActionBar().setTitle("Question " + String.valueOf(question_id + 1));
             question_id = getIntent().getIntExtra("Q_ID", 0);
 
             addQuestionBtn.setText("Update");
@@ -228,5 +231,14 @@ public class QuestionsAdderActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
